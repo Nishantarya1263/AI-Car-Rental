@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings | CarRent AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .bookings-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .booking-card {
+            background: white;
+            padding: 22px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px #00000012;
+        }
+
+        .booking-card h3 {
+            color: #2563eb;
+            margin-bottom: 12px;
+        }
+
+        .booking-card p {
+            margin: 9px 0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 20px;
+        }
+
+        .empty-message {
+            text-align: center;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+        }
+
+        .action-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 11px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">🚗 CarRent <span>AI</span></div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/cars">Cars</a>
+            <a href="/booking">Booking</a>
+            <a href="/my-bookings">My Bookings</a>
+        </div>
+    </nav>
+
+    <main class="bookings-container">
+
+        <h1>My Bookings 📋</h1>
+        <p>View all bookings recorded in this project.</p>
+
+        {% if bookings %}
+
+            {% for booking in bookings %}
+
+                <div class="booking-card">
+
+                    <h3>Booking #{{ booking['id'] }}</h3>
+
+                    <p>
+                        <strong>Customer:</strong>
+                        {{ booking['customer_name'] }}
+                    </p>
+
+                    <p>
+                        <strong>Mobile:</strong>
+                        {{ booking['mobile'] }}
+                    </p>
+
+                    <p>
+                        <strong>Car:</strong>
+                        {{ booking['brand'] }} {{ booking['model'] }}
+                    </p>
+
+                    <p>
+                        <strong>Pick-up:</strong>
+                        {{ booking['pickup_date'] }}
+                    </p>
+
+                    <p>
+                        <strong>Return:</strong>
+                        {{ booking['return_date'] }}
+                    </p>
+
+                    <p>
+                        <strong>Total Price:</strong>
+                        ₹{{ booking['total_price'] }}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="status">
+                            {{ booking['status'] }}
+                        </span>
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-message">
+                <h2>No bookings found 😔</h2>
+                <p>Book your first car to see it here.</p>
+                <a class="action-link" href="/booking">
+                    Book a Car
+                </a>
+            </div>
+
+        {% endif %}
+
+        <a class="action-link" href="/">Back to Home</a>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Car Recommendations | CarRent AI</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fc;
+            color: #15213a;
+        }
+        header {
+            background: #081225;
+            padding: 22px 6%;
+            color: white;
+        }
+        header a { color: white; text-decoration: none; }
+        main {
+            max-width: 800px;
+            margin: 55px auto;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px #15213a12;
+        }
+        h1 { margin-top: 0; color: #10254a; }
+        p { color: #64748b; line-height: 1.6; }
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 20px 0 8px;
+        }
+        select, input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d6deeb;
+            border-radius: 8px;
+            background: white;
+        }
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #3678ff;
+            color: white;
+            border: 0;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover { background: #205fe4; }
+        .back { display: inline-block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/dashboard"><strong>🚗 CarRent AI</strong></a>
+    </header>
+
+    <main>
+        <a class="back" href="/dashboard">← Back to Home</a>
+
+        <div class="card">
+            <h1>🤖 Find Your Ideal Car</h1>
+            <p>Select your budget and preferences to find matching available cars.</p>
+
+            <form action="/recommend-cars" method="POST">
+                <label for="budget">Maximum budget per day (₹)</label>
+                <select id="budget" name="budget" required>
+                    <option value="">Choose your budget</option>
+                    <option value="1500">Up to ₹1,500</option>
+                    <option value="2500">Up to ₹2,500</option>
+                    <option value="3500">Up to ₹3,500</option>
+                    <option value="5000">Up to ₹5,000</option>
+                    <option value="10000">Up to ₹10,000</option>
+                </select>
+
+                <label for="car_type">Preferred car type</label>
+                <select id="car_type" name="car_type">
+                    <option value="Any">Any type</option>
+                    <option value="Hatchback">Hatchback</option>
+                    <option value="Sedan">Sedan</option>
+                    <option value="SUV">SUV</option>
+                </select>
+
+                <label for="fuel">Fuel preference</label>
+                <select id="fuel" name="fuel">
+                    <option value="Any">Any fuel</option>
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Electric">Electric</option>
+                    <option value="CNG">CNG</option>
+                </select>
+
+                <button type="submit">Find Matching Cars →</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

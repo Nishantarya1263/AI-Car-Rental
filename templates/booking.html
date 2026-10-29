@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Car | CarRent AI</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .booking-container {
+            max-width: 650px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px #00000012;
+        }
+        .booking-container h2 {
+            margin-bottom: 10px;
+        }
+        .booking-form {
+            display: grid;
+            gap: 16px;
+            margin-top: 25px;
+        }
+        .booking-form label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+        .booking-form input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+        }
+        .booking-form button {
+            padding: 13px;
+            border: 0;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .booking-container .price {
+            padding: 15px;
+            background: #eff6ff;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 18px;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">🚗 CarRent <span>AI</span></div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/cars">Cars</a>
+        </div>
+    </nav>
+
+    <main class="booking-container">
+        <h2>Book Your Car 🚗</h2>
+        <p>Fill in your details to request a booking.</p>
+
+        <form class="booking-form" action="/book" method="POST">
+
+            <div>
+                <label for="customer_name">Full Name</label>
+                <input id="customer_name" name="customer_name"
+                       type="text" required>
+            </div>
+
+            <div>
+                <label for="mobile">Mobile Number</label>
+                <input id="mobile" name="mobile" type="tel"
+                       pattern="[0-9]{10}" maxlength="10"
+                       placeholder="10-digit mobile number" required>
+            </div>
+
+            <div>
+                <label for="car_id">Select Car</label>
+                <select id="car_id" name="car_id" required
+                        style="width:100%;padding:12px;border:1px solid #ddd;border-radius:7px;">
+                    {% for car in cars %}
+                    <option value="{{ car['id'] }}"data-price="{{ car['price_per_day'] }}"{% if selected_car_id == car['id'] %}selected{% endif %}>
+                        {{ car['brand'] }} {{ car['model'] }}
+                        — ₹{{ car['price_per_day'] }}/day
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="pickup_date">Pick-up Date</label>
+                <input id="pickup_date" name="pickup_date"
+                       type="date" required>
+            </div>
+
+            <div>
+                <label for="return_date">Return Date</label>
+                <input id="return_date" name="return_date"
+                       type="date" required>
+            </div>
+
+            <div class="price">
+                Estimated Total: ₹<span id="total">0</span>
+            </div>
+
+            <button type="submit">Confirm Booking</button>
+        </form>
+
+        <a class="back-link" href="/cars">← Back to Cars</a>
+    </main>
+
+    <script>
+        const carSelect = document.getElementById("car_id");
+        const pickup = document.getElementById("pickup_date");
+        const returning = document.getElementById("return_date");
+        const total = document.getElementById("total");
+
+        const today = new Date();
+        const localToday = new Date(
+            today.getTime() - today.getTimezoneOffset() * 60000
+        ).toISOString().split("T")[0];
+
+        pickup.min = localToday;
+        returning.min = localToday;
+
+        function calculateTotal() {
+            const price = Number(
+                carSelect.selectedOptions[0]?.dataset.price || 0
+            );
+
+            if (!pickup.value || !returning.value) {
+                total.textContent = "0";
+                return;
+            }
+
+            const start = new Date(pickup.value + "T00:00:00");
+            const end = new Date(returning.value + "T00:00:00");
+            const days = Math.round((end - start) / 86400000);
+
+            total.textContent = days > 0 ? price * days : 0;
+        }
+
+        pickup.addEventListener("change", () => {
+            returning.min = pickup.value || localToday;
+
+            if (returning.value && returning.value <= pickup.value) {
+                returning.value = "";
+            }
+
+            calculateTotal();
+        });
+
+        returning.addEventListener("change", calculateTotal);
+        carSelect.addEventListener("change", calculateTotal);
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended Cars</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f4ff;
+            color: #172554;
+        }
+
+        header {
+            background: #0b1f4d;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 20px;
+        }
+
+        .cars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        .car {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #00000012;
+        }
+
+        .price {
+            color: #2563eb;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .book {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            color: #1d4ed8;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>AI Car Rental</h2>
+        <a href="{{ url_for('home') }}">Home</a>
+    </header>
+
+    <div class="container">
+        <h1>Recommended Cars for You</h1>
+
+        <p>
+            Budget: ₹{{ budget }}/day |
+            Type: {{ car_type }} |
+            Fuel: {{ fuel }}
+        </p>
+
+        {% if recommendations %}
+            <div class="cars">
+                {% for car in recommendations %}
+                    <div class="car">
+                        <h2>{{ car["brand"] }} {{ car["model"] }}</h2>
+
+                        <p>Car Type: {{ car["car_type"] }}</p>
+                        <p>Seats: {{ car["seats"] }}</p>
+                        <p>Fuel: {{ car["fuel"] }}</p>
+
+                        <p class="price">
+                            ₹{{ car["price_per_day"] }}/day
+                        </p>
+
+                        
+                          <a class="book"href="{{ url_for('booking_page', car_id=car['id']) }}">Book Now</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h3>No matching cars found.</h3>
+            <p>Try increasing your budget or changing your preferences.</p>
+        {% endif %}
+
+        <a class="back"
+           href="{{ url_for('recommendations_page') }}">
+            ← Try Different Preferences
+        </a>
+    </div>
+</body>
+</html>

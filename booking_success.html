@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation | CarRent AI</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .success-card {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px #00000012;
+            text-align: center;
+        }
+        .success-icon { font-size: 55px; }
+        .success-card p { margin: 14px 0; }
+        .success-card a {
+            display: inline-block;
+            margin: 12px;
+            padding: 12px 20px;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <main class="success-card">
+        <div class="success-icon">✅</div>
+        <h1>Booking Saved Successfully!</h1>
+        <p>Thank you, <strong>{{ customer_name }}</strong>.</p>
+        <p>Car: <strong>{{ car_name }}</strong></p>
+        <p>Pick-up: {{ pickup_date }}</p>
+        <p>Return: {{ return_date }}</p>
+        <h2>Total Price: ₹{{ total_price }}</h2>
+        <p>Your booking has been recorded in the database.</p>
+        <a href="/cars">Explore Cars</a>
+        <a href="/">Home</a>
+    </main>
+</body>
+</html>

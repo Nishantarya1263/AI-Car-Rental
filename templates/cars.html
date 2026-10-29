@@ -1,0 +1,668 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Cars | CarRent AI</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy: #081225;
+            --blue: #3678ff;
+            --bg: #f5f7fc;
+            --text: #15213a;
+            --muted: #71809b;
+            --border: #e5eaf2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .navbar {
+            min-height: 76px;
+            padding: 16px 6%;
+            background: var(--navy);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo span,
+        footer h3 span {
+            color: #70a1ff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #d0daec;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #70a1ff;
+        }
+
+        .nav-links .nav-cta {
+            background: var(--blue);
+            color: white;
+            padding: 11px 15px;
+            border-radius: 8px;
+        }
+
+        .hero {
+            padding: 55px 6% 75px;
+            color: white;
+            background:
+                radial-gradient(ellipse at 80% 20%, #1b3e78 0%, transparent 36%),
+                linear-gradient(125deg, #081225, #142a50);
+        }
+
+        .hero-label {
+            color: #9fbeff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: #70a1ff;
+        }
+
+        .hero p {
+            color: #c0cde2;
+            font-size: 14px;
+            line-height: 1.8;
+            max-width: 600px;
+        }
+
+        .cars-section {
+            padding: 55px 6% 75px;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .section-heading h2 {
+            color: var(--navy);
+            font-size: clamp(26px, 4vw, 36px);
+        }
+
+        .section-heading p:last-child {
+            margin: 12px auto 0;
+            max-width: 600px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* Date availability filter */
+        .filter-box {
+            max-width: 1000px;
+            margin: 0 auto 40px;
+            padding: 25px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 8px 28px #12264a08;
+        }
+
+        .filter-box h3 {
+            color: var(--navy);
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .filter-box > p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto auto;
+            align-items: end;
+            gap: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .form-group input {
+            width: 100%;
+            min-height: 44px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 12px;
+            color: var(--text);
+            background: white;
+        }
+
+        .form-group input:focus {
+            outline: 2px solid #3678ff33;
+            border-color: var(--blue);
+        }
+
+        .filter-btn,
+        .reset-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 44px;
+            padding: 0 17px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .filter-btn {
+            background: var(--blue);
+            color: white;
+            border: 1px solid var(--blue);
+        }
+
+        .filter-btn:hover {
+            background: #245ed6;
+        }
+
+        .reset-btn {
+            background: white;
+            color: var(--navy);
+            border: 1px solid var(--border);
+        }
+
+        .reset-btn:hover {
+            background: #f1f5ff;
+        }
+
+        .results-note {
+            max-width: 1200px;
+            margin: -15px auto 25px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .cars-container {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        .car-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 28px #12264a08;
+            transition: 0.25s ease;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 35px #12264a12;
+            border-color: #c7d8ff;
+        }
+
+        .car-image {
+            height: 205px;
+            background: linear-gradient(135deg, #edf3ff, #dce7fb);
+            overflow: hidden;
+        }
+
+        .car-image img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.35s ease;
+        }
+
+        .car-card:hover .car-image img {
+            transform: scale(1.05);
+        }
+
+        .car-info {
+            padding: 21px;
+        }
+
+        .car-type {
+            display: inline-block;
+            color: #235fd0;
+            background: #edf3ff;
+            border-radius: 5px;
+            padding: 6px 9px;
+            font-size: 10px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .car-card h3 {
+            color: var(--navy);
+            font-size: 19px;
+            margin-bottom: 12px;
+        }
+
+        .car-details {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 2;
+        }
+
+        .car-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid var(--border);
+            padding-top: 17px;
+            margin-top: 18px;
+        }
+
+        .price {
+            color: var(--navy);
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .price span {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 500;
+            margin-top: 3px;
+        }
+
+        .book-btn {
+            display: inline-block;
+            background: var(--navy);
+            color: white;
+            padding: 11px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: 0.2s ease;
+        }
+
+        .book-btn:hover {
+            background: var(--blue);
+        }
+
+        .empty-message {
+            grid-column: 1 / -1;
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            text-align: center;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .back-link {
+            display: block;
+            width: fit-content;
+            margin: 35px auto 0;
+            background: var(--blue);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        footer {
+            padding: 40px 6% 25px;
+            background: var(--navy);
+            color: white;
+            text-align: center;
+        }
+
+        footer h3 {
+            font-size: 23px;
+            margin-bottom: 12px;
+        }
+
+        footer p {
+            color: #aab9d2;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 22px 0;
+        }
+
+        .footer-links a {
+            color: #d1dcf0;
+            font-size: 12px;
+        }
+
+        .copyright {
+            border-top: 1px solid #ffffff1b;
+            padding-top: 20px;
+            margin-top: 22px;
+        }
+
+        @media (max-width: 950px) {
+            .cars-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                justify-content: center;
+                padding: 18px 5%;
+            }
+
+            .nav-links {
+                justify-content: center;
+                gap: 13px;
+            }
+
+            .hero {
+                padding: 45px 6% 60px;
+            }
+
+            .cars-container {
+                grid-template-columns: 1fr;
+            }
+
+            .car-image {
+                height: 220px;
+            }
+
+            .filter-form {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-box {
+                padding: 18px;
+            }
+
+            .filter-btn,
+            .reset-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a class="logo" href="/dashboard">🚗 CarRent <span>AI</span></a>
+
+        <div class="nav-links">
+            <a href="/dashboard">Home</a>
+            <a href="/cars">Cars</a>
+            <a href="/booking">Booking</a>
+            <a href="/my-bookings">My Bookings</a>
+            <a href="/recommendations">AI Recommendations</a>
+            <a href="/admin">Admin</a>
+            <a class="nav-cta" href="/booking">Book a Car</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <p class="hero-label">EXPLORE OUR FLEET</p>
+        <h1>Choose Your <span>Perfect Ride.</span></h1>
+        <p>
+            Discover cars for every journey, from affordable city rides
+            to spacious SUVs. Compare features and daily rental prices
+            before booking your next drive.
+        </p>
+    </section>
+
+    <section class="cars-section">
+
+        <div class="section-heading">
+            <p class="section-title">YOUR NEXT RIDE AWAITS</p>
+            <h2>Available Cars</h2>
+            <p>Compare car types, seating capacity, fuel options and rental prices.</p>
+        </div>
+
+        <!-- Pickup and return date filter -->
+        <div class="filter-box">
+            <h3>Find Cars for Your Dates</h3>
+            <p>Select your pickup and return dates to check which cars are available for your trip.</p>
+
+            <form class="filter-form" action="/cars" method="GET" id="availabilityForm">
+
+                <div class="form-group">
+                    <label for="pickup_date">Pickup Date</label>
+                    <input
+                        type="date"
+                        id="pickup_date"
+                        name="pickup_date"
+                        value="{{ pickup_date or '' }}"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="return_date">Return Date</label>
+                    <input
+                        type="date"
+                        id="return_date"
+                        name="return_date"
+                        value="{{ return_date or '' }}"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="filter-btn">
+                    Check Availability
+                </button>
+
+                <a href="/cars" class="reset-btn">Clear Dates</a>
+
+            </form>
+        </div>
+
+        {% if pickup_date and return_date %}
+            <p class="results-note">
+                Showing cars available from
+                <strong>{{ pickup_date }}</strong>
+                to
+                <strong>{{ return_date }}</strong>.
+            </p>
+        {% endif %}
+
+        <div class="cars-container">
+
+            {% for car in cars %}
+
+                <article class="car-card">
+
+                    <div class="car-image">
+                        <img
+                            src="{{ car['image_url'] }}"
+                            alt="{{ car['brand'] }} {{ car['model'] }}"
+                            loading="lazy"
+                            onerror="this.onerror=null; this.src='https://placehold.co/800x450/eaf1ff/15213a?text=Car+Image';"
+                        >
+                    </div>
+
+                    <div class="car-info">
+
+                        <span class="car-type">{{ car["car_type"] }}</span>
+
+                        <h3>{{ car["brand"] }} {{ car["model"] }}</h3>
+
+                        <p class="car-details">
+                            👥 {{ car["seats"] }} Seats<br>
+                            ⛽ {{ car["fuel"] }}<br>
+                            ✓ Available for selected dates
+                        </p>
+
+                        <div class="car-bottom">
+                            <div class="price">
+                                ₹{{ car["price_per_day"] }}
+                                <span>Per day</span>
+                            </div>
+
+                            <a
+                                href="/booking?car_id={{ car['id'] }}{% if pickup_date and return_date %}&pickup_date={{ pickup_date }}&return_date={{ return_date }}{% endif %}"
+                                class="book-btn"
+                            >
+                                Book Now →
+                            </a>
+                        </div>
+
+                    </div>
+                </article>
+
+            {% else %}
+
+                <div class="empty-message">
+                    <h3>No cars available for these dates.</h3>
+                    <p>Try different pickup and return dates, or check again later.</p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <a class="back-link" href="/dashboard">← Back to Home</a>
+
+    </section>
+
+    <footer>
+        <h3>🚗 CarRent <span>AI</span></h3>
+
+        <p>AI-based car rental and fleet management system.</p>
+
+        <div class="footer-links">
+            <a href="/dashboard">Home</a>
+            <a href="/cars">Explore Cars</a>
+            <a href="/my-bookings">My Bookings</a>
+            <a href="/recommendations">AI Recommendations</a>
+            <a href="/admin">Admin Dashboard</a>
+        </div>
+
+        <p class="copyright">
+            © 2026 CarRent AI. All Rights Reserved.
+        </p>
+    </footer>
+
+    <script>
+        const pickupInput = document.getElementById("pickup_date");
+        const returnInput = document.getElementById("return_date");
+        const availabilityForm = document.getElementById("availabilityForm");
+
+        // Do not allow past pickup dates.
+        const today = new Date();
+        const localToday = new Date(
+            today.getTime() - today.getTimezoneOffset() * 60000
+        ).toISOString().split("T")[0];
+
+        pickupInput.min = localToday;
+
+        function updateReturnMinimum() {
+            if (pickupInput.value) {
+                returnInput.min = pickupInput.value;
+
+                if (
+                    returnInput.value &&
+                    returnInput.value <= pickupInput.value
+                ) {
+                    returnInput.value = "";
+                }
+            } else {
+                returnInput.min = localToday;
+            }
+        }
+
+        pickupInput.addEventListener("change", updateReturnMinimum);
+
+        availabilityForm.addEventListener("submit", function(event) {
+            if (!pickupInput.value || !returnInput.value) {
+                event.preventDefault();
+                alert("Please select both pickup and return dates.");
+                return;
+            }
+
+            if (returnInput.value <= pickupInput.value) {
+                event.preventDefault();
+                alert("Return date must be after the pickup date.");
+            }
+        });
+
+        updateReturnMinimum();
+    </script>
+
+</body>
+</html>

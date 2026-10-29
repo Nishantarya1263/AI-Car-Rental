@@ -1,0 +1,663 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarRent AI | Premium Car Rental</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy: #081225;
+            --blue: #3678ff;
+            --blue-light: #eaf1ff;
+            --text: #15213a;
+            --muted: #71809b;
+            --border: #e5eaf2;
+            --bg: #f6f8fc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a { text-decoration: none; }
+        button, input { font: inherit; }
+
+        .navbar {
+            min-height: 78px;
+            padding: 16px 6%;
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .logo span { color: #5790ff; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 21px;
+        }
+
+        .nav-links a {
+            color: #d0daec;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover { color: #70a1ff; }
+
+        .nav-links .nav-cta {
+            background: var(--blue);
+            color: white;
+            padding: 12px 17px;
+            border-radius: 9px;
+        }
+
+        .hero {
+            padding: 85px 6% 115px;
+            background:
+                radial-gradient(ellipse at 80% 20%, #1b3e78 0%, transparent 36%),
+                linear-gradient(125deg, #081225 0%, #101e38 62%, #142a50 100%);
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 720px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: #9fbeff;
+            background: #ffffff10;
+            border: 1px solid #ffffff20;
+            border-radius: 30px;
+            padding: 10px 15px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 6vw, 70px);
+            line-height: 1.08;
+            letter-spacing: -2.5px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 span { color: #6ea0ff; }
+
+        .hero-text {
+            max-width: 560px;
+            color: #c0cde2;
+            line-height: 1.9;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 13px;
+        }
+
+        .primary-btn, .secondary-btn, .search-btn, .ai-btn {
+            border: 0;
+            cursor: pointer;
+            font-weight: 700;
+            border-radius: 10px;
+            padding: 15px 22px;
+        }
+
+        .primary-btn, .search-btn, .ai-btn {
+            color: white;
+            background: var(--blue);
+        }
+
+        .primary-btn:hover, .search-btn:hover, .ai-btn:hover {
+            background: #205fe4;
+            transform: translateY(-2px);
+        }
+
+        .secondary-btn {
+            color: white;
+            background: #ffffff0d;
+            border: 1px solid #ffffff40;
+        }
+
+        .hero-note {
+            margin-top: 25px;
+            color: #9eafca;
+            font-size: 12px;
+        }
+
+        .search-section {
+            padding: 0 6%;
+            margin-top: -45px;
+            position: relative;
+        }
+
+        .search-box {
+            max-width: 1180px;
+            margin: auto;
+            background: white;
+            padding: 24px;
+            border-radius: 18px;
+            box-shadow: 0 18px 50px #13264a12;
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+            align-items: end;
+            gap: 18px;
+        }
+
+        .search-item label {
+            display: block;
+            color: #43516b;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .search-item input {
+            width: 100%;
+            min-width: 0;
+            padding: 13px;
+            background: #f8faff;
+            border: 1px solid #e1e7f1;
+            border-radius: 9px;
+            outline: none;
+        }
+
+        .search-btn { min-height: 46px; }
+
+        .section { padding: 78px 6%; }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 34px;
+        }
+
+        .section-title {
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 13px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(27px, 4vw, 38px);
+            color: var(--navy);
+        }
+
+        .section-description {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.8;
+            max-width: 620px;
+            margin: 13px auto 0;
+        }
+
+        .category-grid {
+            max-width: 1180px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+        .category-card {
+            padding: 24px 16px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            text-align: center;
+            color: var(--text);
+            transition: 0.25s ease;
+        }
+
+        .category-card:hover {
+            border-color: #9bbaff;
+            transform: translateY(-4px);
+            box-shadow: 0 14px 28px #18386c12;
+        }
+
+        .category-icon {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 15px;
+            border-radius: 15px;
+            background: var(--blue-light);
+            display: grid;
+            place-items: center;
+            font-size: 28px;
+        }
+
+        .category-card h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .category-card p {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .ai-section {
+            padding: 65px 6%;
+        }
+
+        .ai-content {
+            max-width: 1180px;
+            margin: auto;
+            background: linear-gradient(120deg, #0a1630, #152d55);
+            border-radius: 22px;
+            padding: 45px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .ai-icon {
+            flex-shrink: 0;
+            width: 85px;
+            height: 85px;
+            display: grid;
+            place-items: center;
+            border-radius: 22px;
+            background: #ffffff12;
+            border: 1px solid #ffffff20;
+            font-size: 42px;
+        }
+
+        .ai-title {
+            color: #8eb2ff;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.7px;
+            margin-bottom: 12px;
+        }
+
+        .ai-content h2 {
+            font-size: clamp(24px, 4vw, 34px);
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+
+        .ai-content p:not(.ai-title) {
+            color: #c4d0e5;
+            line-height: 1.8;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .features {
+            max-width: 1180px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .feature-icon {
+            font-size: 27px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        footer {
+            padding: 45px 6% 25px;
+            background: var(--navy);
+            color: white;
+            text-align: center;
+        }
+
+        footer h3 {
+            font-size: 24px;
+            margin-bottom: 13px;
+        }
+
+        footer p {
+            color: #aab9d2;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 22px;
+            margin: 23px 0;
+        }
+
+        .footer-links a {
+            color: #d1dcf0;
+            font-size: 12px;
+        }
+
+        .copyright {
+            border-top: 1px solid #ffffff1b;
+            padding-top: 20px;
+            margin-top: 25px;
+            font-size: 11px;
+        }
+
+        @media (max-width: 1000px) {
+            .navbar { justify-content: center; }
+            .nav-links { gap: 14px; }
+
+            .category-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .search-box {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar { padding: 18px 5%; }
+            .logo { font-size: 23px; }
+            .nav-links { gap: 13px; }
+            .nav-links a { font-size: 11px; }
+            .hero { padding: 65px 6% 85px; }
+            .hero h1 { letter-spacing: -1.5px; }
+            .section { padding: 58px 6%; }
+
+            .search-box { grid-template-columns: 1fr; }
+            .search-btn { width: 100%; }
+
+            .category-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .features { grid-template-columns: 1fr; }
+
+            .ai-content {
+                padding: 28px 22px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .ai-icon {
+                width: 65px;
+                height: 65px;
+                font-size: 32px;
+            }
+
+            .primary-btn, .secondary-btn {
+                padding: 14px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a class="logo" href="/dashboard">🚗 CarRent <span>AI</span></a>
+
+        <div class="nav-links">
+            <a href="/dashboard">Home</a>
+            <a href="/cars">Cars</a>
+            <a href="/my-bookings">My Bookings</a>
+            <a href="/recommendations">AI Recommendations</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a href="/admin">Admin</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="eyebrow">✦ SMARTER JOURNEYS START HERE</div>
+
+            <h1>Find Your Drive.<br><span>Own the Journey.</span></h1>
+
+            <p class="hero-text">
+                From everyday city rides to premium luxury experiences,
+                discover a car that matches your budget, style and journey
+                with CarRent AI.
+            </p>
+
+            <div class="buttons">
+                <button class="primary-btn"
+                        onclick="window.location.href='/cars'">
+                    Explore Available Cars →
+                </button>
+
+                <button class="secondary-btn"
+                        onclick="window.location.href='/recommendations'">
+                    ✦ AI Recommendations
+                </button>
+            </div>
+
+            <p class="hero-note">
+                Budget-friendly • Family-ready • Premium • Electric
+            </p>
+        </div>
+    </section>
+
+    <section class="search-section">
+        <div class="search-box">
+            <div class="search-item">
+                <label for="location">📍 Pick-up Location</label>
+                <input id="location" type="text"
+                       placeholder="Enter city or location">
+            </div>
+
+            <div class="search-item">
+                <label for="pickup">📅 Pick-up Date</label>
+                <input id="pickup" type="date">
+            </div>
+
+            <div class="search-item">
+                <label for="return">📅 Return Date</label>
+                <input id="return" type="date">
+            </div>
+
+            <button class="search-btn" onclick="searchCars()">
+                Search Cars
+            </button>
+        </div>
+    </section>
+
+    <!-- Car cards have been removed from the Home page. -->
+
+    <section class="section" id="about">
+        <div class="section-heading">
+            <p class="section-title">CARS FOR EVERY JOURNEY</p>
+            <h2>Find Your Perfect Category</h2>
+            <p class="section-description">
+                Whether you need an affordable daily ride, a spacious family
+                SUV or a luxury car for a special occasion, explore your options.
+            </p>
+        </div>
+
+        <div class="category-grid">
+            <a href="/cars" class="category-card">
+                <div class="category-icon">🚙</div>
+                <h3>Budget Cars</h3>
+                <p>Swift, WagonR, Alto K10 and more</p>
+            </a>
+
+            <a href="/cars" class="category-card">
+                <div class="category-icon">👨‍👩‍👧‍👦</div>
+                <h3>Family Cars</h3>
+                <p>Comfortable rides for everyone</p>
+            </a>
+
+            <a href="/cars" class="category-card">
+                <div class="category-icon">🏔️</div>
+                <h3>SUVs</h3>
+                <p>Creta, Nexon, Scorpio and more</p>
+            </a>
+
+            <a href="/cars" class="category-card">
+                <div class="category-icon">💎</div>
+                <h3>Luxury Cars</h3>
+                <p>Mercedes-Benz, BMW, Audi and more</p>
+            </a>
+
+            <a href="/cars" class="category-card">
+                <div class="category-icon">⚡</div>
+                <h3>Electric Cars</h3>
+                <p>Explore EV options for your journey</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="ai-section">
+        <div class="ai-content">
+            <div class="ai-icon">🤖</div>
+
+            <div>
+                <p class="ai-title">SMART CAR RECOMMENDATIONS</p>
+                <h2>Let AI help you find your ideal ride.</h2>
+
+                <p>
+                    Choose your budget, preferred car type and fuel option.
+                    CarRent AI will show matching vehicles from the cars
+                    available in the system.
+                </p>
+
+                <button class="ai-btn"
+                        onclick="window.location.href='/recommendations'">
+                    Find My Car →
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-heading">
+            <p class="section-title">WHY CARRENT AI</p>
+            <h2>Rental Made Simpler</h2>
+            <p class="section-description">
+                A convenient interface to explore vehicles and manage
+                your rental journey.
+            </p>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🔎</div>
+                <h3>Easy Car Discovery</h3>
+                <p>
+                    Browse the listed vehicles and compare their daily
+                    rental prices, seating capacity and fuel type.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>Smart Recommendations</h3>
+                <p>
+                    Find cars matching your selected budget and
+                    preferences through the recommendation system.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>Booking Management</h3>
+                <p>
+                    Submit a booking, review bookings and use the
+                    dashboard to manage booking status.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <h3>🚗 CarRent <span style="color:#6ea0ff;">AI</span></h3>
+        <p>Smart car rental and fleet management system.</p>
+
+        <div class="footer-links">
+            <a href="/cars">Explore Cars</a>
+            <a href="/my-bookings">My Bookings</a>
+            <a href="/recommendations">AI Recommendations</a>
+            <a href="/admin">Admin Dashboard</a>
+        </div>
+
+        <p class="copyright">
+        
+        </p>
+    </footer>
+
+    <script>
+        function searchCars() {
+            const pickup = document.getElementById("pickup").value;
+            const returning = document.getElementById("return").value;
+
+            if (pickup && returning && returning <= pickup) {
+                alert("Return date must be after the pick-up date.");
+                return;
+            }
+
+            // Current backend sends the user to the Cars page.
+            window.location.href = "/cars";
+        }
+
+        const pickupInput = document.getElementById("pickup");
+        const returnInput = document.getElementById("return");
+
+        pickupInput.addEventListener("change", function () {
+            returnInput.min = pickupInput.value;
+
+            if (returnInput.value && returnInput.value <= pickupInput.value) {
+                returnInput.value = "";
+            }
+        });
+    </script>
+
+</body>
+</html>

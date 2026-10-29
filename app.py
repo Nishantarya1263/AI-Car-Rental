@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from datetime import datetime
@@ -254,10 +253,6 @@ def my_bookings():
     )
 
 
-# ----------------------------------
-# ADMIN DASHBOARD
-# ----------------------------------
-@app.route("/admin")
 
 # ----------------------------------
 # MANAGE CAR AVAILABILITY
@@ -313,7 +308,7 @@ def update_car_availability(car_id):
         conn.close()
 
     return redirect(url_for("manage_cars"))
-
+@app.route("/admin")
 def admin():
     conn = get_db_connection()
 
@@ -468,7 +463,9 @@ def dashboard():
 
     return render_template("index.html", cars=cars)
 
-
+@app.route("/recommendations")
+def recommendations_page():
+    return render_template("recommendations.html")
 @app.route("/recommend-cars", methods=["POST"])
 def recommend_cars():
     try:

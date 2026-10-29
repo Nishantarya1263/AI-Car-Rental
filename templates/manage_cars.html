@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Cars | AI Car Rental</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #07111f;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: #0b1729;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 1px solid #1e3554;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #38bdf8;
+        }
+
+        nav a {
+            color: #dbeafe;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #9fb0c7;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            background: #0d1b2e;
+            border: 1px solid #203956;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th, td {
+            padding: 17px 15px;
+            text-align: left;
+            border-bottom: 1px solid #20314a;
+        }
+
+        th {
+            background: #122640;
+            color: #7dd3fc;
+        }
+
+        tr:hover td {
+            background: #102138;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .available {
+            background: #123c30;
+            color: #4ade80;
+        }
+
+        .unavailable {
+            background: #482323;
+            color: #fca5a5;
+        }
+
+        button {
+            border: none;
+            padding: 10px 13px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+        }
+
+        .make-unavailable {
+            background: #dc4444;
+        }
+
+        .make-available {
+            background: #16a36a;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #9fb0c7;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 18px;
+            background: #1479d1;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 25px;
+            }
+
+            nav {
+                padding: 18px 5%;
+            }
+
+            nav a {
+                margin-left: 0;
+                margin-right: 12px;
+            }
+
+            .container {
+                width: 94%;
+                margin-top: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">AI CAR RENTAL</div>
+
+    <div>
+        <a href="/dashboard">Home</a>
+        <a href="/cars">Cars</a>
+        <a href="/admin">Admin Dashboard</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h1>Car Availability Management</h1>
+
+    <p class="subtitle">
+        Manage your fleet by marking cars as available or unavailable
+        for rental.
+    </p>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Car</th>
+                    <th>Type</th>
+                    <th>Fuel</th>
+                    <th>Price / Day</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for car in cars %}
+                <tr>
+                    <td>{{ car.id }}</td>
+
+                    <td>
+                        <strong>{{ car.brand }} {{ car.model }}</strong>
+                    </td>
+
+                    <td>{{ car.car_type }}</td>
+                    <td>{{ car.fuel }}</td>
+                    <td>₹{{ "%.0f"|format(car.price_per_day) }}</td>
+
+                    <td>
+                        {% if car.available == 1 %}
+                            <span class="status available">Available</span>
+                        {% else %}
+                            <span class="status unavailable">Unavailable</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <form
+                            action="{{ url_for('update_car_availability', car_id=car.id) }}"
+                            method="POST"
+                            onsubmit="return confirm('Are you sure you want to change this car availability?');"
+                        >
+                            {% if car.available == 1 %}
+                                <input type="hidden" name="available" value="0">
+                                <button type="submit" class="make-unavailable">
+                                    Mark Unavailable
+                                </button>
+                            {% else %}
+                                <input type="hidden" name="available" value="1">
+                                <button type="submit" class="make-available">
+                                    Mark Available
+                                </button>
+                            {% endif %}
+                        </form>
+                    </td>
+                </tr>
+
+                {% else %}
+                <tr>
+                    <td colspan="7" class="empty">
+                        No cars found in the database.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/admin" class="back-btn">← Back to Admin Dashboard</a>
+
+</div>
+
+</body>
+</html>
